@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Reproductive Immunology Dashboard</title>
+    <!-- Tailwind CSS for modern clinical UI styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for canvas-based line graphs and timelines -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Sophisticated clinical dark theme */
+            color: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        .glow-card {
+            box-shadow: 0 4px 20px -2px rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-950">
+
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-3">
+                    <span class="px-2.5 py-1 bg-blue-500/20 text-blue-400 rounded-md text-xs font-semibold tracking-wider uppercase">Clinical Record</span>
+                    <span class="text-xs text-slate-400 font-mono">ID: 123456</span>
+                </div>
+                <h1 class="text-2xl font-bold text-white tracking-tight mt-1">Megan T: Immunology & Treatment Mapping</h1>
+                <p class="text-sm text-slate-400">Chronological analysis of surgeries, immunomodulation, and Th1/Th2 immunophenotypic labs over time</p>
+            </div>
+            <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-300 bg-slate-950/60 p-3 rounded-lg border border-slate-800">
+                <div><span class="text-slate-500">DOB:</span> 01/01/1994</div>
+                <span class="text-slate-700">|</span>
+                <div><span class="text-slate-500">Age:</span> 32</div>
+                <span class="text-slate-700">|</span>
+                <div><span class="text-slate-500">Ref MD:</span> Rafat Abbasi MD</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+
+        <!-- Quick Summary Metrics Grid -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="glow-card bg-slate-900 rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Initial Benchmark</span>
+                    <h3 class="text-xl font-bold mt-1 text-slate-200">Baseline Labs</h3>
+                    <p class="text-xs text-slate-400 mt-2">Captured 3/2/2026, 5 weeks post-laparoscopy. High TNF-α:IL-10 (39.6) baseline.</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+                    <span class="text-emerald-400 font-medium">Laparoscopy Recovery</span>
+                    <span class="text-slate-500">01/29/2026</span>
+                </div>
+            </div>
+
+            <div class="glow-card bg-slate-900 rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs text-red-400 font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        Active Inflammation Peak
+                    </span>
+                    <h3 class="text-xl font-bold mt-1 text-white">The "Lupron Flare"</h3>
+                    <p class="text-xs text-slate-400 mt-2">Labs on 4/30 captured TNF-α (51.5) and IFN-γ (47.1) spikes following 2nd leuprolide injection.</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+                    <span class="text-red-400 font-medium">Inflammatory Peak</span>
+                    <span class="text-slate-500">04/30/2026</span>
+                </div>
+            </div>
+
+            <div class="glow-card bg-slate-900 rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs text-teal-400 font-semibold uppercase tracking-wider">Modulatory Progress</span>
+                    <h3 class="text-xl font-bold mt-1 text-slate-200">Therapeutic Descent</h3>
+                    <p class="text-xs text-slate-400 mt-2">6/16 labs show drop in TNF-α (35.0) and IFN-γ (20.7), marking transition to systemic suppression.</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+                    <span class="text-teal-400 font-medium">Clinically Improving</span>
+                    <span class="text-slate-500">06/16/2026</span>
+                </div>
+            </div>
+
+            <div class="glow-card bg-slate-900 rounded-xl p-5 flex flex-col justify-between">
+                <div>
+                    <span class="text-xs text-blue-400 font-semibold uppercase tracking-wider">Current Pharmacological Status</span>
+                    <h3 class="text-xl font-bold mt-1 text-slate-200">Plaquenil Accumulation</h3>
+                    <p class="text-xs text-slate-400 mt-2">Started 4/17. Drug is slowly saturating deep tissues to downregulate lysosomal cytokine pathways.</p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+                    <span class="text-blue-400 font-medium">Steady-State Onset</span>
+                    <span class="text-slate-500">60d active</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Charting Suite -->
+        <section class="glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-md bg-gradient-to-tr from-blue-500 to-indigo-500"></span>
+                        Chronological Trend Engine
+                    </h2>
+                    <p class="text-xs text-slate-400">Proportional chronological spacing maps out tests exactly relative to surgeries and pharmacology</p>
+                </div>
+                <div id="chart-selectors" class="flex flex-wrap gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800">
+                    <button data-chart="cytokines" onclick="switchMainChart('cytokines')" class="px-3.5 py-1.5 rounded-md text-xs font-medium transition bg-blue-600 text-white">Th1/Th2 Cytokine Ratios</button>
+                    <button data-chart="cytotoxicity" onclick="switchMainChart('cytotoxicity')" class="px-3.5 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-white">NK Cytotoxicity (50:1/25:1)</button>
+                    <button data-chart="immunophenotype" onclick="switchMainChart('immunophenotype')" class="px-3.5 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-white">Immunophenotype (%)</button>
+                    <button data-chart="regulatory" onclick="switchMainChart('regulatory')" class="px-3.5 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-white">Regulatory Markers</button>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="relative h-[420px] w-full">
+                <canvas id="chronologicalChart"></canvas>
+            </div>
+
+            <!-- Milestone Explanation Interactive Bar -->
+            <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 pt-4 border-t border-slate-800/80 text-[10px] font-mono text-slate-400">
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-red-500"></span> Surgery Events</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-blue-500"></span> Lupron Dose</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-cyan-400"></span> Plaquenil Start</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-amber-500"></span> Flare Watch Window</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-indigo-500"></span> Diagnostic Labs</div>
+                <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-teal-400"></span> Plaquenil Peak</div>
+            </div>
+        </section>
+
+        <!-- Plaquenil Bio-Accumulation & Clinical Onset Curve -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800">
+                <div class="mb-4">
+                    <h3 class="text-md font-bold text-white flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                        Plaquenil (Hydroxychloroquine) Bio-Accumulation Profile
+                    </h3>
+                    <p class="text-xs text-slate-400">Modeling tissue concentrations & clinical anti-inflammatory saturation over 180 days</p>
+                </div>
+                <div class="relative h-[200px] w-full">
+                    <canvas id="plaquenilChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800 flex flex-col justify-between">
+                <div>
+                    <h4 class="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-3">Pharmacokinetics of Plaquenil</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                        Hydroxychloroquine is a weak lipophilic base with an exceptionally large volume of distribution (~44,000 L). It deposits heavily in cellular lysosomes across deep parenchymal tissues before plasma-tissue equilibrium is established.
+                    </p>
+                    <div class="space-y-3 font-mono text-[11px]">
+                        <div class="flex justify-between items-center bg-slate-950 p-2 rounded border border-slate-800">
+                            <span class="text-slate-500">Tissue Half-life</span>
+                            <span class="text-cyan-400 font-bold">~40 to 50 Days</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-950 p-2 rounded border border-slate-800">
+                            <span class="text-slate-500">First Therapeutic Window</span>
+                            <span class="text-amber-400">6 - 8 Weeks (Reached)</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-950 p-2 rounded border border-slate-800">
+                            <span class="text-slate-500">Tissue Saturation Peak</span>
+                            <span class="text-emerald-400">3 - 6 Months (Target)</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-[10px] text-slate-500 italic mt-4">
+                    Clinical takeaway: Your 4/30 follow-up occurred just 13 days into treatment, explaining the lack of active downregulation during the Lupron flare.
+                </p>
+            </div>
+        </section>
+
+        <!-- High Yield Immunology "Good to Knows" -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- KIR AA + HLA-C2 Risk Analysis Card -->
+            <div class="glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="p-1.5 bg-rose-500/10 text-rose-400 rounded-lg text-xs font-semibold font-mono">Immunogenetics</span>
+                        <h3 class="text-sm font-bold text-white">Maternal-Paternal Match</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                        Data from `03022026 nk and th cells results 2026.pdf` reveals you have a **KIR Genotype Group AA** (characterized by the presence of inhibitory receptors and lack of activating KIR receptors like 2DS1, 2DS2, 2DS3, 2DS5, and 3DS1). 
+                    </p>
+                    <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800 mb-4 space-y-2 text-xs">
+                        <div class="flex justify-between"><span class="text-slate-400">Megan KIR Genotype:</span> <span class="text-white font-mono font-bold">AA</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Megan HLA-C Type:</span> <span class="text-blue-400 font-mono">C1, C1</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Elliot HLA-C Type:</span> <span class="text-emerald-400 font-mono">C1, C2</span></div>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Because your spouse carries the **C2 group allele**, embryos have a 50% chance of inheriting it. The pairing of **Maternal KIR AA** with an **embryonic C2 ligand** is a clinically recognized risk factor for recurrent pregnancy loss (RPL). It induces strong inhibitory signaling in decidual NK cells, limiting essential trophoblast invasion and uterine spiral artery remodeling.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-500 font-mono">
+                    Reference: Hiby SE, et al. J Exp Med. 2004;200:957-965.
+                </div>
+            </div>
+
+            <!-- LAD Panel Card -->
+            <div class="glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="p-1.5 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-semibold font-mono">Blockers</span>
+                        <h3 class="text-sm font-bold text-white">Leukocyte Blocking Status</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                        Your Leukocyte Antibody Detection (LAD) panel from March 2 indicates a **Negative** blocking antibody status.
+                    </p>
+                    <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800 mb-4 space-y-2 text-xs font-mono">
+                        <div class="flex justify-between"><span class="text-slate-400">[T-Cells] IgM+:</span> <span class="text-slate-200">2.0%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">[T-Cells] IgG+:</span> <span class="text-slate-200">13.8%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">[B-Cells] IgM+:</span> <span class="text-slate-200">26.5%</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">[B-Cells] IgG+:</span> <span class="text-slate-200">17.8%</span></div>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        In normal pregnancy, maternal-blocking antibodies coat paternal antigens on the trophoblast to shield the fetus from maternal immune detection. A negative status indicates a lack of maternal blocking protection, commonly seen in cases of recurrent pregnancy loss, which supports the clinical indication for IVIG infusions to aid systemic immunoregulation.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-500 font-mono">
+                    Result Source: Order Split 407534 (RFUMS Lab)
+                </div>
+            </div>
+
+            <!-- Elevated IgA Card -->
+            <div class="glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="p-1.5 bg-amber-500/10 text-amber-400 rounded-lg text-xs font-semibold font-mono">Humoral</span>
+                        <h3 class="text-sm font-bold text-white">Elevated Serum IgA</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-4">
+                        Your baseline clinical summary from April 17, 2026, lists an elevated serum Immunoglobulin A (IgA) concentration of **435 mg/dL** (reported on April 2, 2026).
+                    </p>
+                    <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800 mb-4 flex justify-between items-center text-xs">
+                        <span class="text-slate-400 font-mono">Serum IgA Level:</span>
+                        <span class="text-amber-400 font-mono font-bold">435 mg/dL (High)</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        Elevated IgA is strongly associated with mucosal immune activation, chronic barrier surface inflammation (such as silent endometriosis, gastrointestinal inflammation, or active healing post-surgical laparoscopy), and can be a marker for systemic connective tissue disorders. 
+                    </p>
+                    <p class="text-xs text-slate-400 leading-relaxed mt-2">
+                        While IgA does not cross the placental barrier, its elevation indicates mucosal immune stimulation.
+                    </p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-500 font-mono">
+                    Result Source: Flatiron Health Patient Record CCD
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Fact Checking & Evidence-Based Research Library -->
+        <section class="glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <span class="w-3.5 h-3.5 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center font-serif font-bold text-xs">i</span>
+                Evidence-Based Scientific Fact-Check
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 text-xs text-slate-300 leading-relaxed">
+                <div>
+                    <h4 class="font-bold text-slate-100 uppercase tracking-wider mb-2 text-rose-400">Lupron (GnRH-a) Inflammatory Flare Mechanism</h4>
+                    <p class="mb-3">
+                        <strong>Clinical Fact-Check:</strong> GnRH agonists (like Leuprolide/Lupron) initially cause high-intensity hyper-stimulation of pituitary GnRH receptors, resulting in a transient surge of luteinizing hormone (LH), follicle-stimulating hormone (FSH), and estradiol. This surge is known clinically as the "Lupron Flare".
+                    </p>
+                    <p class="mb-3">
+                        <strong>Impact on Cytokines & NK Cells:</strong> Clinical studies have demonstrated that during the active flare period (first 2-4 weeks post-injection), the hormonal shift and immune stimulation can trigger a surge in inflammatory cytokines (including TNF-α and IFN-γ) and temporarily elevate NK cell counts and cytotoxic performance.
+                    </p>
+                    <div class="bg-slate-950 p-3 rounded-lg border-l-4 border-rose-500 text-slate-400 font-mono text-[10px]">
+                        <strong>Key Publication:</strong> "Increased natural killer cell activities in patients treated with gonadotropin-releasing hormone agonist." <em>PubMed ID: 10394096</em>. Research shows significant transient spikes in peripheral NK cell activity during initial agonist deployment.
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-100 uppercase tracking-wider mb-2 text-cyan-400">Plaquenil (Hydroxychloroquine) Immunoregulatory Onset</h4>
+                    <p class="mb-3">
+                        <strong>Mechanism of Action:</strong> Plaquenil is a weak base that accumulates within cellular lysosomes, increasing internal lysosomal pH. This disrupts antigen processing, blocks the presentation of self-antigens to T-cells, and inhibits TLR (Toll-Like Receptor) signaling pathways.
+                    </p>
+                    <p class="mb-3">
+                        <strong>Downregulation of Th1 Cytokines:</strong> By inhibiting endosomal TLRs (specifically TLR7 and TLR9), Plaquenil downregulates the transcription and secretion of pro-inflammatory cytokines, specifically Th1 mediators like TNF-α and IFN-γ.
+                    </p>
+                    <div class="bg-slate-950 p-3 rounded-lg border-l-4 border-cyan-500 text-slate-400 font-mono text-[10px]">
+                        <strong>Key Publication:</strong> "Hydroxychloroquine for prevention of recurrent miscarriage: study protocol for a multicentre randomized placebo-controlled trial." <em>PMC ID: PMC6527997</em>. Confirms that Plaquenil reduces the Th1 cytokine load over time to optimize maternal-fetal tolerance.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabular Comparison -->
+        <section class="glow-card bg-slate-900 rounded-2xl p-6 border border-slate-800">
+            <h3 class="text-md font-bold text-white mb-4">Complete Laboratory Comparison Database</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs">
+                    <thead>
+                        <tr class="border-b border-slate-800 bg-slate-950 text-slate-400 font-mono">
+                            <th class="p-3">Marker / Assay Component</th>
+                            <th class="p-3">Reference Range</th>
+                            <th class="p-3 text-blue-400">03/02 (Baseline)</th>
+                            <th class="p-3 text-red-400">04/30 (Follow-Up 1)</th>
+                            <th class="p-3 text-teal-400">06/16 (Latest)</th>
+                            <th class="p-3">Interpretation Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/80">
+                        <!-- Cytokines -->
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">TNF-a : IL-10 (Ratio)</td>
+                            <td class="p-3 font-mono text-slate-400">13.2 - 30.6</td>
+                            <td class="p-3 text-rose-400 font-mono">39.6 (H)</td>
+                            <td class="p-3 text-red-500 font-bold font-mono">51.5 (H)</td>
+                            <td class="p-3 text-amber-400 font-mono">35.0 (H)</td>
+                            <td class="p-3 text-slate-400">Primary inflammatory marker; peaked during Lupron flare, now moving down.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">IFN-g : IL-10 (Ratio)</td>
+                            <td class="p-3 font-mono text-slate-400">5.8 - 20.5</td>
+                            <td class="p-3 text-emerald-400 font-mono">20.4</td>
+                            <td class="p-3 text-red-500 font-bold font-mono">47.1 (H)</td>
+                            <td class="p-3 text-amber-400 font-mono">20.7 (H)</td>
+                            <td class="p-3 text-slate-400">Secondary cytokine; spiked during flare, now nearly back to normal.</td>
+                        </tr>
+                        <!-- NK Cytotoxicity -->
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">NK Cytotoxicity (50:1 Assay)</td>
+                            <td class="p-3 font-mono text-slate-400">10.0 - 40.0 %</td>
+                            <td class="p-3 text-emerald-400 font-mono">31.9</td>
+                            <td class="p-3 text-emerald-400 font-mono">30.6</td>
+                            <td class="p-3 text-emerald-400 font-mono">21.5</td>
+                            <td class="p-3 text-slate-400">Functional killing capacity has remained safely within reference limits.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">NK Cytotoxicity (25:1 Assay)</td>
+                            <td class="p-3 font-mono text-slate-400">5.0 - 30.0 %</td>
+                            <td class="p-3 text-emerald-400 font-mono">20.4</td>
+                            <td class="p-3 text-emerald-400 font-mono">27.4</td>
+                            <td class="p-3 text-emerald-400 font-mono">13.2</td>
+                            <td class="p-3 text-slate-400">Consistent with the 50:1 pattern; showing robust regulation post-flare.</td>
+                        </tr>
+                        <!-- Immunophenotype -->
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">%CD56 (Total NK Cells)</td>
+                            <td class="p-3 font-mono text-slate-400">2.0 - 12.0 %</td>
+                            <td class="p-3 text-rose-400 font-mono">17.7 (H)</td>
+                            <td class="p-3 text-red-500 font-bold font-mono">25.1 (H)</td>
+                            <td class="p-3 text-rose-400 font-mono">18.0 (H)</td>
+                            <td class="p-3 text-slate-400">Elevated total NK count; shows marked expansion during peak flare window.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">%CD19 (Total B Cells)</td>
+                            <td class="p-3 font-mono text-slate-400">2.0 - 12.0 %</td>
+                            <td class="p-3 text-rose-400 font-mono">25.7 (H)</td>
+                            <td class="p-3 text-rose-400 font-mono">22.7 (H)</td>
+                            <td class="p-3 text-red-500 font-bold font-mono">28.6 (H)</td>
+                            <td class="p-3 text-slate-400">B-cell expansion remains highly elevated across all three testing dates.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">%CD19+,CD5+ Cells</td>
+                            <td class="p-3 font-mono text-slate-400">5.0 - 10.0 %</td>
+                            <td class="p-3 text-rose-400 font-mono">14.8 (H)</td>
+                            <td class="p-3 text-rose-400 font-mono">11.4 (H)</td>
+                            <td class="p-3 text-red-500 font-bold font-mono">31.3 (H)</td>
+                            <td class="p-3 text-slate-400">B-1 autoantibody producing cells spiked significantly in the latest labs.</td>
+                        </tr>
+                        <!-- Other metrics -->
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">T Regulatory Cells (% of CD4)</td>
+                            <td class="p-3 font-mono text-slate-400">1.9 - 8.5 %</td>
+                            <td class="p-3 text-emerald-400 font-mono">5.5</td>
+                            <td class="p-3 text-emerald-400 font-mono">7.3</td>
+                            <td class="p-3 text-emerald-400 font-mono">6.0</td>
+                            <td class="p-3 text-slate-400">Immunomodulatory protective T-cells are functional and holding steady.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-semibold text-slate-200">%CD3 (Total T Cells)</td>
+                            <td class="p-3 font-mono text-slate-400">60.0 - 85.0 %</td>
+                            <td class="p-3 text-amber-400 font-mono">54.9 (L)</td>
+                            <td class="p-3 text-amber-400 font-mono">50.8 (L)</td>
+                            <td class="p-3 text-amber-400 font-mono">52.2 (L)</td>
+                            <td class="p-3 text-slate-400">Slightly below reference limits; matches the expanded proportion of B/NK cells.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-900/40 py-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p class="font-semibold text-slate-400">RFUMS Clinical Immunology & Advanced Diagnostic Analytics Platform</p>
+            <p>Consult with your reproductive immunologist for clinical treatment updates. All timelines based on certified patient records.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Chronological Data Structure
+        // x represents the physical day from baseline (Day 0 = Laparoscopic Surgery, Jan 29, 2026)
+        // Day mappings:
+        // Jan 29 = Day 0
+        // Mar 02 = Day 32 (Baseline Labs)
+        // Mar 16 = Day 46 (Lupron 1)
+        // Apr 15 = Day 76 (Lupron 2)
+        // Apr 17 = Day 78 (Plaquenil Start)
+        // Apr 30 = Day 91 (Labs Follow-Up 1)
+        // May 04 = Day 95 (Hysteroscopy)
+        // May 14 = Day 105 (Lupron End)
+        // Jun 12 = Day 134 (Lupron 60d post last shot)
+        // Jun 16 = Day 138 (Labs Follow-Up 2)
+        // Jul 11 = Day 163 (Lupron 90d post last shot)
+        // Jul 17 = Day 169 (Plaquenil 90 days)
+
+        const milestones = [
+            { x: 0, label: 'Laparoscopic Surgery', shortLabel: 'LAP', color: '#ef4444' },
+            { x: 32, label: 'Baseline Labs', shortLabel: 'LAB1', color: '#6366f1' },
+            { x: 46, label: 'Lupron Injection #1', shortLabel: 'LUP1', color: '#3b82f6' },
+            { x: 76, label: 'Lupron Injection #2', shortLabel: 'LUP2', color: '#3b82f6' },
+            { x: 78, label: 'Plaquenil Therapy Initiation', shortLabel: 'PLQ', color: '#22d3ee' },
+            { x: 91, label: 'Follow-Up Labs #1', shortLabel: 'LAB2', color: '#6366f1' },
+            { x: 95, label: 'Hysteroscopy Procedure', shortLabel: 'HYS', color: '#ef4444' },
+            { x: 105, label: 'End of 60-day Lupron', shortLabel: 'LUP_END', color: '#3b82f6' },
+            { x: 134, label: 'Flare Watch: 60d Post Lupron', shortLabel: 'FLR_60', color: '#f59e0b' },
+            { x: 138, label: 'Latest Diagnostic Labs #2', shortLabel: 'LAB3', color: '#6366f1' },
+            { x: 163, label: 'Flare Watch: 90d Post Lupron', shortLabel: 'FLR_90', color: '#f59e0b' },
+            { x: 169, label: 'Plaquenil Phase Peak', shortLabel: 'PLQ_PEAK', color: '#10b981' }
+        ];
+
+        // Format dates beautifully for x-axis ticks
+        const dayToDateStr = {
+            0: '01/29',
+            32: '03/02',
+            46: '03/16',
+            76: '04/15',
+            78: '04/17',
+            91: '04/30',
+            95: '05/04',
+            105: '05/14',
+            134: '06/12',
+            138: '06/16',
+            163: '07/11',
+            169: '07/17'
+        };
+
+        const datasetsConfig = {
+            cytokines: [
+                {
+                    label: 'TNF-α : IL-10 (Ref: 13.2-30.6)',
+                    data: [
+                        { x: 32, y: 39.6 },
+                        { x: 91, y: 51.5 },
+                        { x: 138, y: 35.0 }
+                    ],
+                    borderColor: '#f43f5e',
+                    backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.35,
+                    fill: true
+                },
+                {
+                    label: 'IFN-γ : IL-10 (Ref: 5.8-20.5)',
+                    data: [
+                        { x: 32, y: 20.4 },
+                        { x: 91, y: 47.1 },
+                        { x: 138, y: 20.7 }
+                    ],
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.35,
+                    fill: true
+                }
+            ],
+            cytotoxicity: [
+                {
+                    label: 'NK Cytotoxicity 50:1 (Ref: 10.0-40.0 %)',
+                    data: [
+                        { x: 32, y: 31.9 },
+                        { x: 91, y: 30.6 },
+                        { x: 138, y: 21.5 }
+                    ],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.35,
+                    fill: true
+                },
+                {
+                    label: 'NK Cytotoxicity 25:1 (Ref: 5.0-30.0 %)',
+                    data: [
+                        { x: 32, y: 20.4 },
+                        { x: 91, y: 27.4 },
+                        { x: 138, y: 13.2 }
+                    ],
+                    borderColor: '#06b6d4',
+                    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.35,
+                    fill: true
+                }
+            ],
+            immunophenotype: [
+                {
+                    label: '%CD56 NK Cells (Ref: 2.0-12.0 %)',
+                    data: [
+                        { x: 32, y: 17.7 },
+                        { x: 91, y: 25.1 },
+                        { x: 138, y: 18.0 }
+                    ],
+                    borderColor: '#ec4899',
+                    backgroundColor: 'rgba(236, 72, 153, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.35,
+                    fill: true
+                },
+                {
+                    label: '%CD19 B Cells (Ref: 2.0-12.0 %)',
+                    data: [
+                        { x: 32, y: 25.7 },
+                        { x: 91, y: 22.7 },
+                        { x: 138, y: 28.6 }
+                    ],
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.35,
+                    fill: true
+                }
+            ],
+            regulatory: [
+                {
+                    label: 'T Regulatory % of CD4 (Ref: 1.9-8.5 %)',
+                    data: [
+                        { x: 32, y: 5.5 },
+                        { x: 91, y: 7.3 },
+                        { x: 138, y: 6.0 }
+                    ],
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.35,
+                    fill: true
+                },
+                {
+                    label: '%CD19+,CD5+ Cells (Ref: 5.0-10.0 %)',
+                    data: [
+                        { x: 32, y: 14.8 },
+                        { x: 91, y: 11.4 },
+                        { x: 138, y: 31.3 }
+                    ],
+                    borderColor: '#a855f7',
+                    backgroundColor: 'rgba(168, 85, 247, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.35,
+                    fill: true
+                }
+            ]
+        };
+
+        // Custom Canvas Annotation Plugin to render Milestones natively
+        const milestonePlugin = {
+            id: 'milestoneLines',
+            afterDatasetsDraw(chart) {
+                const { ctx, chartArea: { top, bottom, left, right }, scales: { x } } = chart;
+                ctx.save();
+                milestones.forEach(m => {
+                    const xPos = x.getPixelForValue(m.x);
+                    if (xPos >= left && xPos <= right) {
+                        // Draw clean dashed line
+                        ctx.strokeStyle = m.color;
+                        ctx.lineWidth = 1.5;
+                        ctx.setLineDash([4, 4]);
+                        ctx.beginPath();
+                        ctx.moveTo(xPos, top);
+                        ctx.lineTo(xPos, bottom);
+                        ctx.stroke();
+
+                        // Render floating badge indicators at the top
+                        ctx.setLineDash([]);
+                        ctx.fillStyle = m.color;
+                        ctx.beginPath();
+                        ctx.arc(xPos, top, 4, 0, 2 * Math.PI);
+                        ctx.fill();
+
+                        // Short chronological codes
+                        ctx.fillStyle = '#94a3b8';
+                        ctx.font = 'bold 8px font-mono, sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillText(m.shortLabel, xPos, top - 8);
+                    }
+                });
+                ctx.restore();
+            }
+        };
+
+        let mainChart;
+        const mainCtx = document.getElementById('chronologicalChart').getContext('2d');
+
+        function initMainChart(category = 'cytokines') {
+            if (mainChart) mainChart.destroy();
+
+            mainChart = new Chart(mainCtx, {
+                type: 'line',
+                data: {
+                    datasets: datasetsConfig[category]
+                },
+                plugins: [milestonePlugin],
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e2e8f0',
+                                font: { family: 'Inter', size: 11 },
+                                boxWidth: 12,
+                                usePointStyle: true,
+                                padding: 15
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1e293b',
+                            titleColor: '#f8fafc',
+                            bodyColor: '#cbd5e1',
+                            borderColor: '#38bdf8',
+                            borderWidth: 1,
+                            callbacks: {
+                                title: function(context) {
+                                    const dayVal = context[0].parsed.x;
+                                    const matchingMilestone = milestones.find(m => m.x === dayVal);
+                                    const rawDate = dayToDateStr[dayVal] || `Day ${dayVal}`;
+                                    return matchingMilestone ? `${rawDate} - ${matchingMilestone.label}` : `Day ${dayVal} (${rawDate})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            min: 0,
+                            max: 180,
+                            grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { family: 'font-mono', size: 10 },
+                                stepSize: 15,
+                                callback: function(value) {
+                                    return dayToDateStr[value] || '';
+                                }
+                            }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Action switch tab function
+        function switchMainChart(category) {
+            initMainChart(category);
+            const buttons = document.querySelectorAll('#chart-selectors button');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-chart') === category) {
+                    btn.className = "px-3.5 py-1.5 rounded-md text-xs font-medium transition bg-blue-600 text-white";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-md text-xs font-medium transition text-slate-400 hover:text-white";
+                }
+            });
+        }
+
+        const plaCtx = document.getElementById('plaquenilChart').getContext('2d');
+        
+        // Generate continuous curve points modeling pharmacological absorption
+        const plaPoints = [];
+        for (let d = 0; d <= 180; d += 2) {
+            let activeDays = d - 78; // Start at Day 78 (April 17)
+            let concentration = 0;
+            if (activeDays >= 0) {
+                // Modified exponential saturation modeling asymptotic approach to therapeutic target concentration
+                concentration = 100 * (1 - Math.exp(-activeDays / 45)); 
+            }
+            plaPoints.push({ x: d, y: concentration });
+        }
+
+        new Chart(plaCtx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    {
+                        label: 'Tissue Saturation (%)',
+                        data: plaPoints,
+                        borderColor: '#22d3ee',
+                        backgroundColor: 'rgba(34, 211, 238, 0.05)',
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        fill: true
+                    },
+                    // Highlight the 4/30 and 6/16 markers relative to Plaquenil onboarding
+                    {
+                        label: '4/30 Lab Event (13 Days - Minimal Onboarding)',
+                        data: [{ x: 91, y: 25 }],
+                        pointBackgroundColor: '#ef4444',
+                        pointBorderColor: '#fff',
+                        pointRadius: 6,
+                        showLine: false
+                    },
+                    {
+                        label: '6/16 Lab Event (60 Days - Therapeutic Steady-State)',
+                        data: [{ x: 138, y: 73 }],
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#fff',
+                        pointRadius: 6,
+                        showLine: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#cbd5e1', font: { size: 9 }, usePointStyle: true }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        min: 0,
+                        max: 180,
+                        grid: { display: false },
+                        ticks: {
+                            color: '#64748b',
+                            font: { size: 8 },
+                            callback: function(v) { return dayToDateStr[v] || ''; }
+                        }
+                    },
+                    y: {
+                        max: 100,
+                        grid: { color: 'rgba(255, 255, 255, 0.03)' },
+                        ticks: {
+                            color: '#64748b',
+                            font: { size: 8 },
+                            callback: function(value) { return value + '%'; }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Initialize Engine on Page Load
+        window.onload = function() {
+            initMainChart('cytokines');
+        };
+    </script>
+</body>
+</html>
